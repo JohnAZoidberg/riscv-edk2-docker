@@ -1,7 +1,8 @@
 #!/bin/sh
-docker run --rm  \
-  -v $(pwd)/..:/edk2 \
-  -v $(pwd)/../../risc-v/riscv-gnu-toolchain-binaries/:/riscv-gnu-toolchain-binaries \
-  -v $(pwd)/../../risc-v/edk2-platform-riscv:/edk2-platform-riscv \
+docker run --rm -d \
+  -v $(pwd)/:/docker \
+  -v $(pwd)/../edk2:/edk2 \
+  -v $(pwd)/../gcc-riscv-9.2.0-2020.04-x86_64_riscv64-unknown-gnu/:/riscv-gnu-toolchain-binaries \
+  -v $(pwd)/../edk2-platforms/:/edk2-platform-riscv \
   -it edk2 \
   bash
