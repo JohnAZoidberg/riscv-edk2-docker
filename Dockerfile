@@ -11,3 +11,5 @@ MAINTAINER Daniel Schaefer <daniel.schaefer@hpe.com>
 RUN apt-get update
 RUN apt-get install -y autoconf automake autotools-dev build-essential bison flex
 RUN apt-get install -y build-essential uuid-dev iasl git gcc nasm python3-distutils
+# To be compatible with old ubuntu if the toolchain is built for that
+RUN ln -s /usr/lib/x86_64-linux-gnu/libmpfr.so.6 /usr/lib/x86_64-linux-gnu/libmpfr.so.4
