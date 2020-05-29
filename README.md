@@ -10,7 +10,7 @@ cd edk2-riscv
 # Clone all repositories with submodules
 git clone https://github.com/JohnAZoidberg/riscv-edk2-docker
 git clone --depth=1 --recurse-submodules https://github.com/tianocore/edk2
-git clone --depth=1 --branch=devel-riscvplatforms https://github.com/changab/edk2-platforms
+git clone --depth=1 --recurse-submodules --branch=devel-riscvplatforms https://github.com/changab/edk2-platforms
 
 # Download and unpack the RISC-V
 wget https://github.com/riscv/riscv-uefi-edk2-docs/raw/master/gcc-riscv-edk2-ci-toolchain/gcc-riscv-9.2.0-2020.04-x86_64_riscv64-unknown-gnu.tar.xz
