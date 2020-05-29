@@ -1,6 +1,7 @@
 # Building EDK2 for RISC-V
 
 Prerequisites: Docker, QEMU
+Optional: libnotify
 
 ```sh
 # Create a working directory and enter it
