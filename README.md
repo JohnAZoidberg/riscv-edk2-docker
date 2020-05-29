@@ -19,7 +19,7 @@ tar xf gcc-riscv-9.2.0-2020.04-x86_64_riscv64-unknown-gnu.tar.xz
 rm gcc-riscv-9.2.0-2020.04-x86_64_riscv64-unknown-gnu.tar.xz
 
 # Now you can work from within this repo
-cd edk2-docker
+cd riscv-edk2-docker
 
 # Build the docker container
 docker build -t edk2 .
