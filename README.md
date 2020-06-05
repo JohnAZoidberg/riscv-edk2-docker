@@ -1,6 +1,6 @@
 # Building EDK2 for RISC-V
 
-Prerequisites: Docker, QEMU
+Prerequisites: Docker, QEMU, Built kernel, initramfs, DTB
 Optional: libnotify
 
 ```sh
@@ -37,6 +37,9 @@ sudo cp initramfs.cpio /mnt
 sudo umount /mnt
 sudo losetup -d /dev/loop0
 mv linux.iso Silicon/RISC-V/ProcessorPkg/Universal/EspRamdisk/linux.iso
+
+# Copy the device tree into EDK2 build directory
+cp U540.dtb Platform/RISC-V/PlatformPkg/Universal/Sec/Riscv64/U540.dtb
 
 # Build EDK2
 ./build-in-docker.sh
