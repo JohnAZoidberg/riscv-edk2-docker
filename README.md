@@ -10,8 +10,8 @@ cd edk2-riscv
 
 # Clone all repositories with submodules
 git clone https://github.com/JohnAZoidberg/riscv-edk2-docker
-git clone --depth=1 --recurse-submodules --branch=esp-ramdisk https://github.com/riscv/riscv-edk2
-git clone --depth=1 --recurse-submodules --branch=riscv-dt-fixup-ramdisk https://github.com/riscv/riscv-edk2-platforms
+git clone --depth=1 --recurse-submodules --branch=esp-ramdisk https://github.com/riscv/riscv-edk2 edk2
+git clone --depth=1 --recurse-submodules --branch=riscv-dt-fixup-ramdisk https://github.com/riscv/riscv-edk2-platforms edk2-platforms
 
 # Download and unpack the RISC-V
 wget https://github.com/riscv/riscv-uefi-edk2-docs/raw/master/gcc-riscv-edk2-ci-toolchain/gcc-riscv-9.2.0-2020.04-x86_64_riscv64-unknown-gnu.tar.xz
@@ -31,8 +31,9 @@ docker build -t edk2 .
 mkfs.msdos -C linux.iso 14000
 sudo losetup /dev/loop0 linux.iso
 sudo mount /dev/loop0 /mnt
-sudo cp your-linux-riscv64.efi /mnt
-sudo cp your-linux-initrd.cpio /mnt
+# Copy the kernel and initramfs that you built previously
+sudo cp linux-riscv64.efi /mnt
+sudo cp initramfs.cpio /mnt
 sudo umount /mnt
 sudo losetup -d /dev/loop0
 mv linux.iso Silicon/RISC-V/ProcessorPkg/Universal/EspRamdisk/linux.iso
