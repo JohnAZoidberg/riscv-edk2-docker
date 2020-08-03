@@ -1,7 +1,7 @@
 #!/bin/sh
 qemu-system-riscv64 -cpu sifive-u54 -machine sifive_u \
   -bios U540.fd \
-  -m 2048 -nographic -smp cpus=2,maxcpus=2 #\
+  -m 2048 -nographic -smp cpus=5,maxcpus=5 #\
   #k-serial /dev/pts/20
   #-D qemu-log -d in_asm
 
