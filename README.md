@@ -56,5 +56,5 @@ map -r
 fs0:
 
 # Launch Linux with your favourite arguments, for example:
-linux-riscv64.efi console=ttyS0 earlycon early_ioremap_debug initrd=\initramfs.cpio efi=debug
+linux-riscv64.efi root=/dev/ram rw console=ttySIF0 earlycon efi=debug initrd=\initramfs.cpio
 ```
