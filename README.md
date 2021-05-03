@@ -3,6 +3,9 @@
 Prerequisites: Docker, QEMU, Built kernel, initramfs, DTB
 Optional: libnotify
 
+
+See instructions for the virt platform [here](https://github.com/JohnAZoidberg/riscv-edk2-docker/tree/riscv-virt).
+
 ```sh
 # Create a working directory and enter it
 mkdir edk2-riscv
