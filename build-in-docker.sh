@@ -95,10 +95,10 @@ $DOCKER_CMD run \
   -v $(pwd)/Build:/Build \
   -v $(pwd)/:/docker \
   -v $(pwd)/../edk2:/edk2 \
-  -v $(pwd)/../edk2-platforms/:/edk2-platform-riscv \
+  -v $(pwd)/../edk2-platforms/:/edk2-platforms \
   -v ~/.ccache:/ccache \
   -e "CCACHE_DIR=/ccache" \
-  -e "PACKAGES_PATH=/edk2:/edk2-platform-riscv" \
+  -e "PACKAGES_PATH=/edk2:/edk2-platforms:/edk2-platforms/Platform/Intel" \
   -e "EDK_TOOLS_PATH=/edk2/BaseTools" \
   -it "$RISCV_EDK2_CONTAINER" \
    /docker/build-edk2.sh \
