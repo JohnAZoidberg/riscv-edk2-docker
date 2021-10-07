@@ -1,1 +1,9 @@
+# Files built by EDK2
 *.fd
+Build/
+
+# Files for Linux integration test
+esp.iso
+rootfs.cpio
+rootfs.ext2
+Image

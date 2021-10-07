@@ -1,0 +1,97 @@
+#!/usr/bin/env -S expect -f
+
+# Exit with status 1 if not matched
+proc expect_or_exit { failure text} {
+    global ret
+    expect {
+        timeout { puts "\nFailed to $failure"; exit 1 }
+        "$text"
+    }
+}
+
+#set timeout 60
+spawn ./prepare-virt-linux.sh
+expect_or_exit "prepare Linux" "Prepared Linux"
+
+set timeout 5
+
+spawn ./run-virt-linux.sh
+
+expect_or_exit "reach first print" "Initializing OpenSBI library"
+expect_or_exit "reach first print by OpenSBI" "OpenSBI v"
+#expect_or_exit "reach first print after OpenSBI" "LaunchPeiCore:"
+expect_or_exit "reach DXE IPL" "DXE IPL Entry"
+expect_or_exit "reach DXE CORE" "Loading DXE CORE"
+# Need to add three backslashes. See: https://stackoverflow.com/questions/64981382/how-to-escape-square-brackets-in-expect
+expect_or_exit "reach BSD Entry" "\\\[Bds\\\] Entry..."
+
+
+expect_or_exit "boot to UEFI Shell" "Shell>"
+
+# TODO: This will fail
+send -- "map -r\r\n"
+expect_or_exit "find attached disk" "GPT"
+
+send -- "ls\r\n"
+expect_or_exit "run ls"  "Current directory not specified."
+
+send -- "fs0:\r\n"
+expect_or_exit "enter filesystem"  "FS0:\\\\>"
+
+send -- "ls\r\n"
+expect_or_exit "find initramfs"  "initramfs.cpio"
+expect_or_exit "list kernel"  "linux-riscv64.efi"
+
+send "initrd initramfs.cpio\r\n"
+expect_or_exit "run initrd command"  "FS0:\\\\>"
+
+send "linux-riscv64.efi root=/dev/vda rootwait earlycon\r\n"
+
+# Efistub
+expect_or_exit "first print by EFI stub"  "EFI stub: Booting Linux Kernel..."
+expect_or_exit ""  "Using DTB from configuration table"
+expect_or_exit ""  "Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path"
+expect_or_exit ""  "Exiting boot services and installing virtual address map..."
+
+# Actual kernel
+expect_or_exit ""  "\\\[    0.000000\\\] Linux version"
+expect_or_exit ""  "\\\[    0.000000\\\] efi: EFI"
+expect_or_exit ""  "\\\[    0.000000\\\] Initial ramdisk at"
+expect_or_exit ""  "\\\[    0.000000\\\] SBI specification v0.3 detected"
+expect_or_exit ""  "\\\] Unpacking initramfs..."
+expect_or_exit ""  "Run /init as init process"
+expect_or_exit "login prompt"  "buildroot login:"
+
+send "root\n"
+expect_or_exit "shell prompt"  "#"
+
+send "uname -a\n"
+expect_or_exit "print Linux kernel information"  "Linux buildroot"
+expect_or_exit "shell prompt"  "#"
+
+send "ls -l /sys/firmware/efi\n"
+expect_or_exit "print EFI systab file in sysfs"  "systab"
+
+send "ls -l /dev/vda\n"
+expect_or_exit "find vda disk"  "/dev/vda"
+
+send "ip a\n"
+expect_or_exit "find ethernet adapter"  "2: eth0"
+#expect_or_exit ""  "#"
+
+send "poweroff\n"
+#expect_or_exit "shut down"  "reboot: Power down"
+
+expect_or_exit "terminate process"  eof
+
+lassign [wait] pid spawnid os_error_flag value
+
+if {$os_error_flag == 0} {
+    puts "Successfully ran tests and powered down"
+} else {
+    puts "Failed to power down. errno: $value"
+    exit 1
+}
+
+# Uncomment if you'd like to interact with the booted Linux
+#interact
