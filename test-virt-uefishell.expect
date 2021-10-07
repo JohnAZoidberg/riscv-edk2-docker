@@ -1,0 +1,31 @@
+#!/usr/bin/env -S expect -f
+
+# Exit with status 1 if not matched
+proc expect_or_exit { failure text} {
+    global ret
+    expect {
+        timeout { puts "\nFailed to $failure"; exit 1 }
+        "$text"
+    }
+}
+
+set timeout 5
+
+spawn ./run-virt.sh
+
+expect_or_exit "reach first print" "Initializing OpenSBI library"
+expect_or_exit "reach first print by OpenSBI" "OpenSBI v"
+#expect_or_exit "reach first print after OpenSBI" "LaunchPeiCore:"
+expect_or_exit "reach DXE IPL" "DXE IPL Entry"
+expect_or_exit "reach DXE CORE" "Loading DXE CORE"
+# Need to add three backslashes. See: https://stackoverflow.com/questions/64981382/how-to-escape-square-brackets-in-expect
+expect_or_exit "reach BSD Entry" "\\\[Bds\\\] Entry..."
+
+
+expect_or_exit "boot to UEFI Shell" "Shell>"
+
+send -- "map -r\r\n"
+expect_or_exit "run map" "Status: Not Found"
+
+send -- "ls\r\n"
+expect_or_exit "run ls"  "Current directory not specified."
