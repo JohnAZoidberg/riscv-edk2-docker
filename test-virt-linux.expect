@@ -30,7 +30,7 @@ expect_or_exit "boot to UEFI Shell" "Shell>"
 
 # TODO: This will fail
 send -- "map -r\r\n"
-expect_or_exit "find attached disk" "GPT"
+expect_or_exit "find attached disk" "MBR"
 
 send -- "ls\r\n"
 expect_or_exit "run ls"  "Current directory not specified."

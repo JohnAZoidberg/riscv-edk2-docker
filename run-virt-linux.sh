@@ -3,7 +3,7 @@ qemu-system-riscv64 -machine virt \
   -bios Build/RiscvVirt/DEBUG_GCC5/FV/RISCVVIRT.fd \
   -drive file=rootfs.ext2,format=raw,id=hd0 \
   -device virtio-blk-device,drive=hd0 \
-  -drive file=esp.iso,format=raw,id=hd1 \
+  -drive file=fat:rw:fs_esp,format=raw,media=disk,id=hd1 \
   -device virtio-blk-device,drive=hd1 \
   -netdev user,id=net0 \
   -device virtio-net-device,netdev=net0 \
