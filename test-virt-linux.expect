@@ -49,21 +49,21 @@ send "linux-riscv64.efi root=/dev/vda rootwait earlycon\r\n"
 
 # Efistub
 expect_or_exit "first print by EFI stub"  "EFI stub: Booting Linux Kernel..."
-expect_or_exit ""  "Using DTB from configuration table"
-expect_or_exit ""  "Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path"
-expect_or_exit ""  "Exiting boot services and installing virtual address map..."
+expect_or_exit "find DTB in EFI systab"  "Using DTB from configuration table"
+expect_or_exit "load initrd from DevicePath"  "Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path"
+expect_or_exit "call ExitBootServices"  "Exiting boot services and installing virtual address map..."
 
 # Actual kernel
-expect_or_exit ""  "\\\[    0.000000\\\] Linux version"
-expect_or_exit ""  "\\\[    0.000000\\\] efi: EFI"
-expect_or_exit ""  "\\\[    0.000000\\\] Initial ramdisk at"
-expect_or_exit ""  "\\\[    0.000000\\\] SBI specification v0.3 detected"
-expect_or_exit ""  "\\\] Unpacking initramfs..."
-expect_or_exit ""  "Run /init as init process"
-expect_or_exit "login prompt"  "buildroot login:"
+expect_or_exit "reach first actual kernel print"  "\\\[    0.000000\\\] Linux version"
+expect_or_exit "reach linux efi subsystem"  "\\\[    0.000000\\\] efi: EFI"
+expect_or_exit "find initrd by kernel"  "\\\[    0.000000\\\] Initial ramdisk at"
+expect_or_exit "detect SBI"  "\\\[    0.000000\\\] SBI specification v0.3 detected"
+expect_or_exit "unpack initrd"  "\\\] Unpacking initramfs..."
+expect_or_exit "run /init"  "Run /init as init process"
+expect_or_exit "reach login prompt"  "buildroot login:"
 
 send "root\n"
-expect_or_exit "shell prompt"  "#"
+expect_or_exit "login and reach shell prompt"  "#"
 
 send "uname -a\n"
 expect_or_exit "print Linux kernel information"  "Linux buildroot"
@@ -77,7 +77,7 @@ expect_or_exit "find vda disk"  "/dev/vda"
 
 send "ip a\n"
 expect_or_exit "find ethernet adapter"  "2: eth0"
-#expect_or_exit ""  "#"
+#expect_or_exit "shell prompt"  "#"
 
 send "poweroff\n"
 #expect_or_exit "shut down"  "reboot: Power down"
